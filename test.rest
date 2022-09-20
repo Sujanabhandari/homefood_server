@@ -1,0 +1,21 @@
+@host = http://localhost:3000
+
+###Request 1
+GET {{host}}/routeTest
+
+###Request 2
+POST {{host}}/set-token
+Content-Content-Type: application/json
+
+{
+    "user":{
+        "name": "Sujana",
+         "age": 60,
+         "role": "guest",
+    }
+}
+
+###Request 3
+GET {{host}}/get-token
+Authorization: 
+

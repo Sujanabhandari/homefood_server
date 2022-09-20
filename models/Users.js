@@ -5,12 +5,19 @@ const Schema = mongoose.Schema;
 // var validator = require('validator');
 
 const { SECRET_KEY } = process.env;
+
 const userSchema = new Schema({
-  user_name: { type: String, unique: true, minLength: 2, maxLength: 255 },
-  password: { type: String, required: true },
+  userName: { type: String, unique: true, minLength: 2, maxLength: 255 },
+  password: { type: String},
   email: { type: String, required: true },
-  //enum[admin, users] role can accept these 2 values
-  role: { type: String, default:"admin" },
+
+  profilePic: { type: String},
+  ratingIds: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
+  //Reference Should be offers or users?
+  role: {type:String, enum:['creator_id', 'customer', 'guest']},
+  _offers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
+  _orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+  // _customerOrderIds: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 });
 
 // userSchema.methods.generateToken = function () {
