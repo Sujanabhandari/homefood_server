@@ -13,24 +13,6 @@ const create_new_offer = async(req, res, next) => {
     next(err);
   }
 };
-
-// const retrieve_all_offers = async (req, res, next) => {
-//     //populate different refs and return selected fields
-//     const allMovies = await Movie.find().populate([
-//       {
-//         path: "director",
-  
-//         select: ["name", "surname", "country"],
-//       },
-//       {
-//         path: "actors",
-  
-//         select: ["name", "surname", "country"],
-//       },
-//     ]);
-  
-//     res.status(200).send(allMovies);
-//   };
 module.exports = {
   create_new_offer
 };
