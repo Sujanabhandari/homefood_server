@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const { DATABASE_CONNECTION_URL } = process.env;
 console.log(DATABASE_CONNECTION_URL)
 module.exports = mongoose
