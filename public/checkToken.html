@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Authentication/Authorization Exercise</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <div>
+      <h2>Check your JWT</h2>
+      <p>
+        In this exercise, the JWT is sent back as part of the HTTP headers of
+        the response (open your devtools and check in the network tab)
+      </p>
+      <form action="checkJWT" method="post">
+        <label for="token">Token:</label>
+        <input
+          type="text"
+          id="token"
+          name="token"
+          placeholder="Paste your JWT here"
+        /><br /><br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>
