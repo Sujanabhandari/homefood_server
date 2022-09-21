@@ -20,8 +20,6 @@ const create_new_offer = async(req, res, next) => {
 
 const get_all_offer = async (req, res, next) => {
   const condition = req.query;
-  console.log(condition)
-  console.log("I am here")
   try {
     const allOffers= await Offer.find(condition);
     if (!allOffers.length)
@@ -30,7 +28,6 @@ const get_all_offer = async (req, res, next) => {
         .send(
           "The collection you are trying to query does not contain any documents"
         );
-
     return res.status(200).send(allOffers);
     
   } catch (err) {
