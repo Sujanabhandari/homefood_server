@@ -18,6 +18,43 @@ const create_new_offer = async(req, res, next) => {
   }
 };
 
+const get_all_offer = async (req, res, next) => {
+  const condition = req.query;
+  try {
+    const allOffers= await Offer.find(condition);
+    if (!allOffers.length)
+      return res
+        .status(400)
+        .send(
+          "The collection you are trying to query does not contain any documents"
+        );
+    return res.status(200).send(allOffers);
+    
+  } catch (err) {
+    console.log(err);
+
+    next(err);
+  }
+};
+
+const retrieve_offer_by_id = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    //findOne({_id:id})
+    const foundOffer = await Offer.findById(id);
+
+    if (!foundOffer)
+      return res.status(404).send(`The Offer with _id ${id} does not exist`);
+
+    return res.status(200).send(foundOffer);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports = {
-  create_new_offer
+  create_new_offer,
+  retrieve_offer_by_id,
+  get_all_offer
 };

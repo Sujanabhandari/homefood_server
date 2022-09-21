@@ -4,17 +4,15 @@ const multer  = require('multer');
 var offerRouter = express.Router();
 
 const {
-    create_new_offer
+    create_new_offer, get_all_offer, retrieve_offer_by_id
 } = require("../controllers/OfferController");
 
 const upload = require("../middlewares/image_storage");
 
-offerRouter.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
 
 // offerRouter.route("/").post(create_new_offer);
-offerRouter.route("/").post(upload.single('image'), create_new_offer);
+offerRouter.route("/").get(get_all_offer).post(upload.single('image'),create_new_offer);
+offerRouter.route("/:id").get(retrieve_offer_by_id);
 
 module.exports = offerRouter;
 
