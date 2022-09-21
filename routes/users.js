@@ -1,20 +1,21 @@
-// var express = require('express');
+var express = require('express');
 
-// var usersRouter = express.Router();
+var usersRouter = express.Router();
 
-// const {
-//   create_new_offer
-// } = require("../controllers/OfferController");
+const {
+  create_login_user
+} = require("../controllers/user_input");
 
-// usersRouter.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
+usersRouter.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+});
 
-// // const {registerUser, loginUser, getUser} = require("../controllers/auth");
+const {registerUser, loginUser, getUser} = require("../controllers/auth");
 
-// usersRouter.route("/offers").post(create_new_offer);
-// // usersRouter.post('/signin', loginUser);
-// // usersRouter.get('/me', getUser);
+usersRouter.post('/signup', registerUser);
+usersRouter.post('/signin', loginUser);
+usersRouter.get('/me', getUser);
 
+usersRouter.route('/connect').post(create_login_user);
 
-// module.exports = usersRouter;
+module.exports = usersRouter;

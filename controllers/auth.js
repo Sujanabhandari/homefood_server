@@ -29,25 +29,24 @@ const registerUser = async (req, res, next) => {
         Send token => res.json() res.set() res.cookie() [x]
   */
   const {
-    body: { user_name, password, email },
+    body: { userName, email, profilePic, password, ...rest },
   } = req;
 
   const found = await User.findOne({ email });
   if (found) res.send("Erro Occurs");
   const hash = await bcrypt.hash(password, 5);
-  // const { _id } = await User.create ({ user_name, password: hash, email});
-  // const token = jwt.sign({ _id }, process.env.SECRET_KEY);
-  // res.json({ token });
-  const createdUser = await User.create({ user_name, password: hash, email });
+
+  const createdUser = await User.create({ userName, password: hash, email, profilePic });
 
   const token = createdUser.generateToken();
  //set token
  res.set("token",token).status(201).json(
  {
   _id:createdUser._id,
-  user_name: createdUser.user_name,
+  userName: createdUser.userName,
   password: createdUser.password,
   email:createdUser.email,
+  profilePic:createdUser.profilePic
 })
 };
 
@@ -64,7 +63,7 @@ const loginUser = async (req, res, next) => {
           Send token => res.json() res.set() res.cookie() [x]
   */
   const {
-    body: { email, password },
+    body: { userName, password },
   } = req;
 
   const found = await User.findOne({ email }).select("+password");
@@ -79,13 +78,14 @@ const loginUser = async (req, res, next) => {
 
 const authenticate_self = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const {  userName, password } = req.body;
 
-    if (!username || !password) {
+    if (!userName || !password) {
       return res.status(400).send("Missing Fields");
     }
 
-    const foundUser = await User.findOne({ username });
+    const foundUser = await User.findOne({ userName });
+
     if (!foundUser) {
       return res.status(401).send("No user is registered");
     }
@@ -96,6 +96,7 @@ const authenticate_self = async (req, res, next) => {
     }
     const token = foundUser.generateToken();
     res.set("token", token).status(200).send("Login was successfull");
+    
   } catch (err) {
     console.log(err);
     next();
