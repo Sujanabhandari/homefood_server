@@ -13,8 +13,8 @@ var usersRouter = require('./routes/users');
 var offerRouter = require('./routes/offer');
 
 var app = express();
-
-app.use(cors({ origin: '*' }));
+//exposed the header 
+app.use(cors({ origin: '*' , exposedHeaders:"token"}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-// app.use('/', usersRouter);
+app.use('/', usersRouter);
 app.use('/offers', offerRouter);
 
 // catch 404 and forward to error handler
