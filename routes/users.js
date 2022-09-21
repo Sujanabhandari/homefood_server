@@ -6,15 +6,18 @@ const {
   create_login_user
 } = require("../controllers/user_input");
 
-usersRouter.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+// usersRouter.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
+const {
+    authorizeAdmin
+  } = require("../middlewares/authorizeAdmin");
 
 const {registerUser, loginUser, getUser} = require("../controllers/auth");
 
 usersRouter.post('/signup', registerUser);
 usersRouter.post('/signin', loginUser);
-usersRouter.get('/me', getUser);
+usersRouter.get('/me', authorizeAdmin, getUser);
 
 usersRouter.route('/connect').post(create_login_user);
 

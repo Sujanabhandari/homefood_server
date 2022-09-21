@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const User = require("../models/Users");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -29,7 +30,7 @@ const registerUser = async (req, res, next) => {
         Send token => res.json() res.set() res.cookie() [x]
   */
   const {
-    body: { userName, email, profilePic, password, ...rest },
+    body: { userName, email, profilePic, password },
   } = req;
 
   const found = await User.findOne({ email });
@@ -63,17 +64,18 @@ const loginUser = async (req, res, next) => {
           Send token => res.json() res.set() res.cookie() [x]
   */
   const {
-    body: { userName, password },
+    body: { email, password },
   } = req;
 
   const found = await User.findOne({ email }).select("+password");
-  if (!found) res.send("User not exist");
+  if (!found) res.status(404).send("User not exist");
 
   const match = await bcrypt.compare(password, found.password);
-  if (!match) res.send("Password is incorrect", 400);
+  if (!match) return res.status(400).send("Password is incorrect", 400);
 
   const token = jwt.sign({ _id: found._id }, process.env.SECRET_KEY);
-  res.json({ token });
+  console.log(token)
+ return res.set("token",token).status(200).json({ token });
 };
 
 const authenticate_self = async (req, res, next) => {
@@ -95,8 +97,8 @@ const authenticate_self = async (req, res, next) => {
       return res.status(401).send("Wrong credentials");
     }
     const token = foundUser.generateToken();
-    res.set("token", token).status(200).send("Login was successfull");
-    
+   return res.set("token", token).status(200).send("Login was successfull");
+
   } catch (err) {
     console.log(err);
     next();
@@ -104,10 +106,11 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-  const { userId } = req;
-  const user = await User.findById(userId);
-  if (!user) throw new ErrorResponse(`User doesn't exist`, 404);
-  res.json(user);
+  console.log(req.user);
+  const user = await User.findById(req.user._id);
+  if (!user) return res.status(404).send(`User doesn't exist`, 404);
+  console.log(user);
+  return res.status(200).json(req.user);
 };
 
 module.exports = { authenticate_self, registerUser, loginUser, getUser };

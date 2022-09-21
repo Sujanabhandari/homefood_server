@@ -5,7 +5,7 @@ const app = require("../app");
 const storage = multer.diskStorage({
 
   destination: function (req, file, cb) {
-    console.log("From Middlewar", req)
+    // console.log("From Middlewar", req)
     cb(null, "./public/data/uploads/");
   },
   filename: function (req, file, cb) {

@@ -4,28 +4,29 @@ const bcrypt = require("bcrypt");
 
 const create_new_user = async(req, res, next) => {
 
-    const { username, password, email } = req.body;
-
-    if(!username || !password || !email ){
+    const { userName, password, email } = req.body;
+    console.log(req.body)
+    if(!userName || !password || !email ){
         return res.status(400).send("Please Provide all the fields")
     }
     try{
-        const userExists = await User.findOne({$or: [{email},{username}]})
+        const userExists = await User.findOne({$or: [{email},{userName}]})
 
         if(userExists){
-            return res.status(400).send("Username and/or email are already being used")
+            return res.status(400).send("userName and/or email are already being used")
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
 
         const registeredUser = await User.create({
-            username, email, password:hashedPassword
+            userName, email, password:hashedPassword
         });
 
-        const token = registeredUser.generateToken()
+        const token = registeredUser.generateToken();
+        console.log(token)
         res.set("token", token).status(201).json({message: "successfully created new admin", registeredUser:{
-            username: registeredUser.username,
+            userName: registeredUser.userName,
             _id: registeredUser._id,
             email: registeredUser.email
         }})
