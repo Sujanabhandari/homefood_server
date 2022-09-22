@@ -5,12 +5,13 @@ const Schema = mongoose.Schema;
 
 
 const offerSchema = new Schema({
-  title: { type: String, unique: true, minLength: 2, maxLength: 255 },
+  title: { type: String, minLength: 2, maxLength: 255 },
   description: { type: String},
-  specials: { type: String},
+  specials: { type: Array},
   quantity: { type: Number},
   image: { type: String},
   price: { type: Number},
+  address: { type: String},
   timeSlot: { type: String},
   //ID of logged in user.
   creatorId: { type: Schema.Types.ObjectId, ref: "User" },

@@ -4,8 +4,7 @@ const bcrypt = require("bcrypt");
 
 const create_new_user = async(req, res, next) => {
 
-    const { userName, password, email } = req.body;
-    console.log(req.body)
+    const { userName, password, email, profilePic } = req.body;
     if(!userName || !password || !email ){
         return res.status(400).send("Please Provide all the fields")
     }
@@ -20,7 +19,7 @@ const create_new_user = async(req, res, next) => {
         console.log(hashedPassword);
 
         const registeredUser = await User.create({
-            userName, email, password:hashedPassword
+            userName, email, password:hashedPassword, profilePic
         });
 
         const token = registeredUser.generateToken();
@@ -28,7 +27,8 @@ const create_new_user = async(req, res, next) => {
         res.set("token", token).status(201).json({message: "successfully created new admin", registeredUser:{
             userName: registeredUser.userName,
             _id: registeredUser._id,
-            email: registeredUser.email
+            email: registeredUser.email,
+            profilePic: registeredUser.profilePic
         }})
 
     }catch(err){

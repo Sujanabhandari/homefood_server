@@ -19,6 +19,8 @@ const jwt = require("jsonwebtoken");
 
 
 const registerUser = async (req, res, next) => {
+  console.log("Here",req.body);
+  console.log("Here",req.file);
   /*  
     Validate the input => maybe use a middleware with Joi [x]
     Check if user already exists => User.find(by email) [x]
@@ -32,13 +34,27 @@ const registerUser = async (req, res, next) => {
   const {
     body: { userName, email, profilePic, password },
   } = req;
-
+  console.log(req.file);
   const found = await User.findOne({ email });
   if (found) res.send("Erro Occurs");
 
   const hash = await bcrypt.hash(password, 5);
+  // console.log("Here",req.file);
 
-  const createdUser = await User.create({ userName, password: hash, email, profilePic });
+  // const createdUser = await User.create({ userName, password: hash, email, profilePic:location });
+
+  const createdUser = new User({
+    userName,
+    password: hash, 
+    email,
+    profilePic:req.file.location
+  });
+
+  await createdUser.save();
+
+  // const { _id } = createdUser;
+
+  // res.status(201).send(createdUser);
 
   const token = createdUser.generateToken();
   //set token
