@@ -35,20 +35,21 @@ const registerUser = async (req, res, next) => {
 
   const found = await User.findOne({ email });
   if (found) res.send("Erro Occurs");
+
   const hash = await bcrypt.hash(password, 5);
 
   const createdUser = await User.create({ userName, password: hash, email, profilePic });
 
   const token = createdUser.generateToken();
- //set token
- res.set("token",token).status(201).json(
- {
-  _id:createdUser._id,
-  userName: createdUser.userName,
-  password: createdUser.password,
-  email:createdUser.email,
-  profilePic:createdUser.profilePic
-})
+  //set token
+  return res.set("token", token).status(201).json(
+    {
+      _id: createdUser._id,
+      userName: createdUser.userName,
+      password: createdUser.password,
+      email: createdUser.email,
+      profilePic: createdUser.profilePic
+    })
 };
 
 const loginUser = async (req, res, next) => {
@@ -75,12 +76,12 @@ const loginUser = async (req, res, next) => {
 
   const token = jwt.sign({ _id: found._id }, process.env.SECRET_KEY);
   console.log(token)
- return res.set("token",token).status(200).json({ token });
+  return res.set("token", token).status(200).json({ token });
 };
 
 const authenticate_self = async (req, res, next) => {
   try {
-    const {  userName, password } = req.body;
+    const { userName, password } = req.body;
 
     if (!userName || !password) {
       return res.status(400).send("Missing Fields");
@@ -97,7 +98,7 @@ const authenticate_self = async (req, res, next) => {
       return res.status(401).send("Wrong credentials");
     }
     const token = foundUser.generateToken();
-   return res.set("token", token).status(200).send("Login was successfull");
+    return res.set("token", token).status(200).send("Login was successfull");
 
   } catch (err) {
     console.log(err);
