@@ -11,9 +11,6 @@ const create_new_offer = async (req, res, next) => {
   console.log(req.user._id)
 
   try {
-    // const UserInfoData = await UserInfo.create({ "title": "Sujna", "creatorId": "632b0d8248873c979962ca2d" });
-    // console.log(UserInfoData);
-
     const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories } = req.body;
 
     //Getting array from Frontend needs to be parsed
@@ -48,7 +45,11 @@ const add_creator_to_offer = async (req, res, next) => {
 const get_all_offer = async (req, res, next) => {
   const condition = req.query;
   try {
-    const allOffers = await Offer.find(condition);
+    const allOffers = await Offer.find(condition).populate({ 
+      path: "creatorId",
+      select: ["userName", "email", "profilePic"],
+    })
+
     if (!allOffers.length)
       return res
         .status(400)
@@ -67,7 +68,11 @@ const get_all_offer = async (req, res, next) => {
 const retrieve_offer_by_id = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const foundOffer = await Offer.findById(id);
+    const foundOffer = await Offer.findById(id).populate('creatorId'); 
+    // .populate({ {
+    //   path: "creatorId",
+    //   select: ["userName", "email", "profilePic"],
+    // }})
 
     if (!foundOffer)
       return res.status(404).send(`The Offer with _id ${id} does not exist`);
