@@ -89,9 +89,10 @@ const loginUser = async (req, res, next) => {
   const match = await bcrypt.compare(password, found.password);
   if (!match) return res.status(400).send("Password is incorrect", 400);
 
-  const token = jwt.sign({ _id: found._id }, process.env.SECRET_KEY);
+  // const token = jwt.sign({ _id: found._id }, process.env.SECRET_KEY);
+  const token = found.generateToken();
 
-  return res.set("token", token).status(200).json({ token });
+  return res.set("token", token).status(200).send("Login was successful");
 };
 
 const authenticate_self = async (req, res, next) => {
@@ -122,7 +123,7 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-
+  console.log(req.user)
   const user = await User.findById(req.user._id);
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
 

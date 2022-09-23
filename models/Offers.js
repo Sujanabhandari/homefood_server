@@ -13,6 +13,10 @@ const offerSchema = new Schema({
   price: { type: Number},
   address: { type: String},
   timeSlot: { type: String},
+  createdAt: {
+    type: Date, 
+    default:() => Date.now(),
+  },
   //ID of logged in user.
   creatorId: { type: Schema.ObjectId, ref:"User" },
   categories: { type: String},
