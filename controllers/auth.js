@@ -19,8 +19,7 @@ const jwt = require("jsonwebtoken");
 
 
 const registerUser = async (req, res, next) => {
-  console.log("Here",req.body);
-  console.log("Here",req.file);
+
   /*  
     Validate the input => maybe use a middleware with Joi [x]
     Check if user already exists => User.find(by email) [x]
@@ -34,7 +33,7 @@ const registerUser = async (req, res, next) => {
   const {
     body: { userName, email, profilePic, password },
   } = req;
-  console.log(req.file);
+
   const found = await User.findOne({ email });
   if (found) res.send("Erro Occurs");
 
@@ -91,7 +90,7 @@ const loginUser = async (req, res, next) => {
   if (!match) return res.status(400).send("Password is incorrect", 400);
 
   const token = jwt.sign({ _id: found._id }, process.env.SECRET_KEY);
-  console.log(token)
+
   return res.set("token", token).status(200).json({ token });
 };
 
@@ -123,11 +122,35 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-  console.log(req.user);
+
   const user = await User.findById(req.user._id);
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
-  console.log(user);
+
   return res.status(200).json(req.user);
 };
 
-module.exports = { authenticate_self, registerUser, loginUser, getUser };
+const get_all_users = async (req, res) => {
+  const users = await User.find();
+
+  return users.length
+    ? res.status(200).json(users)
+    : res.status(404).send('No users found');
+};
+
+const retrieve_all_users_id = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    //findOne({_id:id})
+    const foundUser = await User.findById(id);
+
+    if (!foundUser)
+      return res.status(404).send(`The User with _id ${id} does not exist`);
+
+    return res.status(200).send(foundUser);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports = { authenticate_self, registerUser, loginUser, getUser, get_all_users, retrieve_all_users_id };

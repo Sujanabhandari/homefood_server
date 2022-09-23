@@ -14,7 +14,7 @@ const offerSchema = new Schema({
   address: { type: String},
   timeSlot: { type: String},
   //ID of logged in user.
-  creatorId: { type: Schema.Types.ObjectId, ref: "User" },
+  creatorId: { type: Schema.ObjectId, ref:"User" },
   categories: { type: String},
   // categoryId: { type: Schema.Types.ObjectId, ref: "Category" }
 });

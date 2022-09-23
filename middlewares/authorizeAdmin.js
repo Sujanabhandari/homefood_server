@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { ADMIN_SECRET } = process.env;
-
 
 const authorizeAdmin = async(req, res, next)=>{
     // console.log(req.headers);

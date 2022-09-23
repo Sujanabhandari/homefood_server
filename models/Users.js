@@ -10,7 +10,6 @@ const userSchema = new Schema({
   password: {  type: String, required: [true, 'Password is required']},
   email: { type: String, required: true },
   profilePic: { type: String},
-
   ratingIds: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
   //Reference Should be offers or users?
   // role: {type:String, enum:['creator_id', 'customer', 'guest']},
