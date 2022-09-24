@@ -1,10 +1,6 @@
 
 const Offer = require("../models/Offers");
 
-const UserInfo = require("../models/UserInfo");
-
-
-
 const create_new_offer = async (req, res, next) => {
 
   console.log("jhkasdf",req.user);
