@@ -19,6 +19,7 @@ const upload = require("../middlewares/s3ImageUpload");
 offerRouter.route("/").get(get_all_offer);
 
 offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_offer);
+// offerRouter.post('/create',upload.single('image'), create_new_offer);
 
 offerRouter.route("/:id").get(retrieve_offer_by_id);
 offerRouter.route("/:id").patch(add_creator_to_offer);
