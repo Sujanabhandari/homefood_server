@@ -7,6 +7,11 @@ const {
     create_new_offer, get_all_offer, retrieve_offer_by_id, add_creator_to_offer
 } = require("../controllers/OfferController");
 
+
+const {
+  create_new_Order, get_all_order
+} = require("../controllers/FoodOrder");
+
 // const upload = require("../middlewares/image_storage");
 
 const {
@@ -22,7 +27,13 @@ offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_of
 // offerRouter.post('/create',upload.single('image'), create_new_offer);
 
 offerRouter.route("/:id").get(retrieve_offer_by_id);
-offerRouter.route("/:id").patch(add_creator_to_offer);
+
+
+//for Reserve the Food Order
+offerRouter.post('/:id/order', authorizeAdmin, create_new_Order);
+
+
+offerRouter.route("/orders").get(get_all_order);
 
 module.exports = offerRouter;
 
