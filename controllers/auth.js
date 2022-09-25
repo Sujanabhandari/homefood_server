@@ -123,10 +123,9 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-  console.log(req.user)
+  // console.log(req.user)
   const user = await User.findById(req.user._id);
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
-
   return res.status(200).json(req.user);
 };
 

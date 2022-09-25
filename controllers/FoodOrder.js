@@ -3,7 +3,6 @@ const Order = require("../models/Orders");
 const User = require("../models/Users");
 
 
-
 const create_new_Order = async (req, res, next) => {
 
   console.log("Offer Information", req.body)
@@ -12,10 +11,12 @@ const create_new_Order = async (req, res, next) => {
     const {customerId , creatorId, offerId } = req.body;
 
     //Getting array from Frontend needs to be parsed
+    console.log(req.body);
     const data = {
         offerId: req.body.offerId,
         creatorId: req.body.creatorId,
-        customerId: req.user._id
+        customerId: req.user._id,
+        quantity: req.body.quantity
     }
     console.log(data);
     const newOrder = await Order.create(data);
