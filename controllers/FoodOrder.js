@@ -29,12 +29,10 @@ const create_new_Order = async (req, res, next) => {
     const updateQuanity = await Offer.findByIdAndUpdate(
       req.body.offerId,
       {
-        // reserved_quantity: findQuanity.reserved_quantity + req.body.order_quantity,
         quantity: findQuanity.quantity - req.body.order_quantity,
       },
       { new: true }
     )
-
 
     res.status(201).send(newOrder);
 
@@ -68,8 +66,6 @@ const get_all_order = async (req, res, next) => {
     next(err);
   }
 };
-
-
 
 
 const retrieve_order_by_id = async (req, res, next) => {

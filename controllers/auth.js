@@ -124,49 +124,51 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-  // console.log(req.user)
-  const user = await User.findById(req.user._id);
+  console.log(req.user)
+  const user = await User.findById(req.user._id).populate([
+    {
+      path: "offers",
+      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
+    },
+    // {
+    //   path: "orders",
+    //   select: ["order_quantity", "offerId", "customerId", "creatorId"],
+    // },
+  ]);
+
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
   return res.status(200).json(req.user);
 };
 
 
 //Get All users
-const get_all_users = async (req, res) => {
-  const allUsers = await User.find().populate([
-    {
-      path: "offers",
+// const get_all_users = async (req, res) => {
+//   const allUsers = await User.find().populate([
+//     {
+//       path: "offers",
+//       select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
+//     },
+//   ]);
 
-      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
-    },
-    // {
-    //   path: "orders",
+//   return allUsers.length
+    // res.status(200).json(allUsers)
+//     : res.status(404).send('No users found');
+// };
 
-    //   select: ["quantity"],
-    //   //populate nested customer ref in movies population 
-    //   // populate: { path: "customerId", select: ["userName"] },
-    // }
-  ]);
+// const retrieve_all_users_id = async (req, res, next) => {
+//   const { id } = req.params;
+//   try {
+//     //findOne({_id:id})
+//     const foundUser = await User.findById(id);
 
-  return allUsers.length
-    ? res.status(200).json(allUsers)
-    : res.status(404).send('No users found');
-};
+//     if (!foundUser)
+//       return res.status(404).send(`The User with _id ${id} does not exist`);
 
-const retrieve_all_users_id = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    //findOne({_id:id})
-    const foundUser = await User.findById(id);
+//     return res.status(200).send(foundUser);
+//   } catch (err) {
+//     console.log(err);
+//     next(err);
+//   }
+// };
 
-    if (!foundUser)
-      return res.status(404).send(`The User with _id ${id} does not exist`);
-
-    return res.status(200).send(foundUser);
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-module.exports = { authenticate_self, registerUser, loginUser, getUser, get_all_users, retrieve_all_users_id };
+module.exports = { authenticate_self, registerUser, loginUser, getUser };
