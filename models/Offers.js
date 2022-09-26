@@ -13,7 +13,7 @@ const offerSchema = new Schema({
   price: { type: Number},
   address: { type: String},
   timeSlot: { type: String},
-  reserved_quantity: { type: Number},
+  reserved_quantity: { type: Number, default: 0},
   date: { type: Date, default: Date.now },
   //ID of logged in user.
   creatorId: { type: Schema.ObjectId, ref:"User" },
