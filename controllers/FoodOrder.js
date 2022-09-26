@@ -30,9 +30,10 @@ const create_new_Order = async (req, res, next) => {
 };
 
 const get_all_order = async (req, res, next) => {
+  console.log("Hello")
     const condition = req.query;
     try {
-      const allOrder = await Order.find()
+      const allOrder = await Order.find(condition)
       if (!allOrder.length)
         return res
           .status(400)
@@ -48,7 +49,29 @@ const get_all_order = async (req, res, next) => {
     }
   };
 
+  const retrieve_order_by_id = async (req, res, next) => {
+    console.log("Retrieve Orders by Id")
+    const { id } = req.params;
+   
+    try {
+      const foundOrder = await Order.findById(id); 
+      // .populate({ {
+      //   path: "creatorId",
+      //   select: ["userName", "email", "profilePic"],
+      // }})
+  
+      if (!foundOrder)
+        return res.status(404).send(`The Order with _id ${id} does not exist`);
+  
+      return res.status(200).send(foundOrder);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  };
+
 module.exports = {
   create_new_Order,
-  get_all_order
+  get_all_order,
+  retrieve_order_by_id
 };
