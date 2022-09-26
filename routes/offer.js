@@ -20,12 +20,10 @@ const {
 
 const upload = require("../middlewares/s3ImageUpload");
 
-// offerRouter.route("/").post(create_new_offer);
 offerRouter.route("/").get(get_all_offer);
 
 offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_offer);
-// offerRouter.post('/create',upload.single('image'), create_new_offer);
-// offerRouter.route("/:category_name").get(retrieve_offer_by_category);
+
 offerRouter.route("/:id").get(retrieve_offer_by_id);
 
 offerRouter.route("/category_name").get(retrieve_offer_by_category);
@@ -35,7 +33,6 @@ offerRouter.route("/category_name").get(retrieve_offer_by_category);
 offerRouter.post('/:id/order', authorizeAdmin, create_new_Order);
 
 
-offerRouter.route("/orders").get(get_all_order);
 
 module.exports = offerRouter;
 
