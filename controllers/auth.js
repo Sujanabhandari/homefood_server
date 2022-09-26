@@ -31,7 +31,7 @@ const registerUser = async (req, res, next) => {
         Send token => res.json() res.set() res.cookie() [x]
   */
   const {
-    body: { userName, email, profilePic, password },
+    body: { userName, email, profilePic, password, date},
   } = req;
 
   const found = await User.findOne({ email });
@@ -46,6 +46,7 @@ const registerUser = async (req, res, next) => {
     userName,
     password: hash, 
     email,
+    date:date,
     profilePic:req.file.location
   });
 
@@ -129,11 +130,25 @@ const getUser = async (req, res, next) => {
   return res.status(200).json(req.user);
 };
 
-const get_all_users = async (req, res) => {
-  const users = await User.find();
 
-  return users.length
-    ? res.status(200).json(users)
+//Get All users
+const get_all_users = async (req, res) => {
+  const allUsers = await User.find().populate([
+    {
+      path: "offers",
+
+      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories","creatorId"],
+    },{
+      path: "orders",
+
+      select: ["quantity", "customerId"],
+      //populate nested customer ref in movies population 
+      populate: { path: "customerId", select: ["name", "surname"] },
+    }
+  ]);
+
+  return allUsers.length
+    ? res.status(200).json(allUsers)
     : res.status(404).send('No users found');
 };
 

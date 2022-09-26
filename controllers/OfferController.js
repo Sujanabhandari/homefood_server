@@ -7,12 +7,12 @@ const create_new_offer = async (req, res, next) => {
   console.log(req.user._id)
 
   try {
-    const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories } = req.body;
+    const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories, date } = req.body;
 
     //Getting array from Frontend needs to be parsed
     const data = {
       title: title, description:description, quantity:quantity, address:address, image: req.file.location, price:price, timeSlot:timeSlot,
-      specials: JSON.parse(specials), creatorId:req.user._id, categories:categories
+      specials: JSON.parse(specials), creatorId:req.user._id, categories:categories, date:date
     }
     console.log(data);
     const newOffer = await Offer.create(data);
