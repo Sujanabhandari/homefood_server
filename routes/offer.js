@@ -4,7 +4,7 @@ const multer  = require('multer');
 var offerRouter = express.Router();
 
 const {
-    create_new_offer, get_all_offer, retrieve_offer_by_id, add_creator_to_offer
+    create_new_offer, get_all_offer, retrieve_offer_by_id, add_creator_to_offer, retrieve_offer_by_category
 } = require("../controllers/OfferController");
 
 
@@ -25,8 +25,10 @@ offerRouter.route("/").get(get_all_offer);
 
 offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_offer);
 // offerRouter.post('/create',upload.single('image'), create_new_offer);
-
+// offerRouter.route("/:category_name").get(retrieve_offer_by_category);
 offerRouter.route("/:id").get(retrieve_offer_by_id);
+
+offerRouter.route("/category_name").get(retrieve_offer_by_category);
 
 
 //for Reserve the Food Order

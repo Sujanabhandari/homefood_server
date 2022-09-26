@@ -137,14 +137,15 @@ const get_all_users = async (req, res) => {
     {
       path: "offers",
 
-      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories","creatorId"],
-    },{
-      path: "orders",
+      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
+    },
+    // {
+    //   path: "orders",
 
-      select: ["quantity", "customerId"],
-      //populate nested customer ref in movies population 
-      populate: { path: "customerId", select: ["name", "surname"] },
-    }
+    //   select: ["quantity"],
+    //   //populate nested customer ref in movies population 
+    //   // populate: { path: "customerId", select: ["userName"] },
+    // }
   ]);
 
   return allUsers.length

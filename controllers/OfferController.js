@@ -63,6 +63,7 @@ const get_all_offer = async (req, res, next) => {
 
 const retrieve_offer_by_id = async (req, res, next) => {
   const { id } = req.params;
+ 
   try {
     const foundOffer = await Offer.findById(id).populate('creatorId'); 
     // .populate({ {
@@ -80,9 +81,30 @@ const retrieve_offer_by_id = async (req, res, next) => {
   }
 };
 
+const retrieve_offer_by_category = async (req, res, next) => {
+
+  console.log("From params", req.query)
+  try {
+    const foundCategory = await Offer.find({ categories: req.query.category_name }); 
+    // .populate({ {
+    //   path: "creatorId",
+    //   select: ["userName", "email", "profilePic"],
+    // }})
+
+    if (!foundOffer)
+      return res.status(404).send(`The Offer with foundCategory ${foundCategory} does not exist`);
+
+    return res.status(200).send(foundCategory);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports = {
   create_new_offer,
   retrieve_offer_by_id,
   get_all_offer,
-  add_creator_to_offer
+  add_creator_to_offer,
+  retrieve_offer_by_category
 };
