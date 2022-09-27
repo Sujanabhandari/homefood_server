@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 // var authRouter = require('./routes/auth');
 var offerRouter = require('./routes/offer');
 var orderRouter = require('./routes/orderRoute.js')
+var ratingRouter = require('./routes/rating.js')
 
 var app = express();
 //exposed the header 
@@ -27,6 +28,7 @@ app.use('/', indexRouter);
 app.use('/', usersRouter);
 app.use('/offers', offerRouter);
 app.use('/orders', orderRouter);
+app.use('/ratings', ratingRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
