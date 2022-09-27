@@ -20,7 +20,7 @@ const create_new_Order = async (req, res, next) => {
       offerId: req.body.offerId,
       creatorId: req.body.creatorId,
       customerId: req.user._id,
-      order_quantity: req.body.order_quantity
+      order_quantity: req.body.order_quantity,
     }
     const newOrder = await Order.create(data);
 
@@ -43,15 +43,34 @@ const create_new_Order = async (req, res, next) => {
 };
 
 
-
 const get_all_order = async (req, res, next) => {
   console.log("Hello")
   const condition = req.query;
   try {
-    const allOrder = await Order.find(condition).populate({
-      path: "offerId",
-      select: ["quantity"],
-    })
+    const allOrder = await Order.find(condition).populate(
+      {
+        path: "offerId",
+        
+        select: ["quantity", "title", "price", "address","address","timeSlot","creatorId","date"],
+      }, 
+    ).populate({
+      path: "customerId",  
+      select: ["userName", "profilePic"],
+    },)
+    .populate({
+      path: "creatorId",  
+      select: ["userName","profilePic"],
+    },)
+
+    // const customerPopulate = await User.find(req.user._id);
+    // console.log("From Customer Populate", customerPopulate);
+    // .populate(
+      
+    //   {
+    //     path: "creatorId",
+    //     select: ["userName"],
+    //   },
+    // )
 
     if (!allOrder.length)
       return res
@@ -59,6 +78,8 @@ const get_all_order = async (req, res, next) => {
         .send(
           "The collection you are trying to query does not contain any documents"
         );
+
+    console.log(allOrder);
     return res.status(200).send(allOrder);
 
   } catch (err) {
