@@ -12,9 +12,10 @@ const userSchema = new Schema({
   profilePic: { type: String},
   date: { type: Date, default: Date.now },
   ratingIds: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
-  //Reference Should be offers or users?
-  // role: {type:String, enum:['creator_id', 'customer', 'guest']},
+ 
+  //One creator can create many offers
   offers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
+  //One customer can order many food 
   orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
   // _customerOrderIds: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 });
