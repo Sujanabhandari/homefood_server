@@ -51,7 +51,7 @@ const get_all_order = async (req, res, next) => {
       {
         path: "offerId",
         
-        select: ["quantity", "title", "price", "address","address","timeSlot","creatorId","date"],
+        select: ["quantity", "title", "price", "address","timeSlot","creatorId","date", "image"],
       }, 
     ).populate({
       path: "customerId",  
@@ -61,16 +61,6 @@ const get_all_order = async (req, res, next) => {
       path: "creatorId",  
       select: ["userName","profilePic"],
     },)
-
-    // const customerPopulate = await User.find(req.user._id);
-    // console.log("From Customer Populate", customerPopulate);
-    // .populate(
-      
-    //   {
-    //     path: "creatorId",
-    //     select: ["userName"],
-    //   },
-    // )
 
     if (!allOrder.length)
       return res

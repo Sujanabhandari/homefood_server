@@ -11,7 +11,8 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   profilePic: { type: String},
   date: { type: Date, default: Date.now },
-  ratingIds: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
+  ratings: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
+  averageRating: {type:Number, default:0},
  
   //One creator can create many offers
   offers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
