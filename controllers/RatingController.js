@@ -19,26 +19,6 @@ const create_new_ratings = async (req, res, next) => {
 
     const newRating = await Rating.create(data);
 
-    // const creatorRating = await Rating.find({creatorId: req.body.creatorId});
-    const avgRating = await Rating.aggregate([{
-    //     $unwind: '$ratings'
-    // },{
-    //     $match: {
-    //        "ratings.creatorId": req.body.creatorId
-    //     }
-    // },{
-        $group: {
-            _id: null,
-            // rating: {$avg: '$rating'}
-            avgRate: {
-                $avg: "$rating"
-            }
-        }
-    }
-])
-
-    console.log("Average Rating", avgRating);
-
     await User.findByIdAndUpdate(req.body.creatorId, {
         $push: {
             ratings: newRating._id,

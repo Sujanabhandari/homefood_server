@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res, next) => {
 
   const {
-    body: { userName, email, profilePic, password, date},
+    body: { userName, email, profilePic, password, date },
   } = req;
 
   const found = await User.findOne({ email });
@@ -17,10 +17,10 @@ const registerUser = async (req, res, next) => {
 
   const createdUser = new User({
     userName,
-    password: hash, 
+    password: hash,
     email,
-    date:date,
-    profilePic:req.file.location
+    date: date,
+    profilePic: req.file.location
   });
 
   await createdUser.save();
@@ -83,43 +83,36 @@ const authenticate_self = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
-  console.log(req.user)
 
-
-  const creatorInfo = await User.findById(req.user._id);
-  console.log("Id", creatorInfo)
+  const creatorInfo = await User.find(req.user);
+  console.log("Creator Id", creatorInfo);
 
   const avgRating = await Rating.aggregate([{
-    //     $unwind: '$ratings'
-    // },{
-        $match: {
-          creatorId: creatorInfo._id
-        }
-    },{
-        $group: {
-            _id: null,
-            // rating: {$avg: '$rating'}
-            avgRate: {
-                $avg: "$rating"
-            }
-        }
+    $group: {
+      _id: null,
+      avgRate: {
+        $avg: "$rating"
+      }
     }
-])
+  }
+  ])
 
-console.log("Average Rating", avgRating);
+  console.log("Average Rating", avgRating);
+
 
 
   const user = await User.findById(req.user._id).
-  populate(
-    {
-      path: "offers",
-      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
-    },
-  )
-  .populate({
-    path: "ratings",  
-    select: ["rating"],
-  },)
+    populate(
+      {
+        path: "offers",
+        select: ["title", "description", "specials", "quantity", "image", "price", "timeSlot", "reserved_quantity", "categories"],
+      },
+    )
+    .populate({
+      path: "ratings",
+      select: ["rating"],
+    },)
+
 
 
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
