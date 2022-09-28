@@ -3,8 +3,6 @@ const Offer = require("../models/Offers");
 
 const create_new_offer = async (req, res, next) => {
 
-  console.log("jhkasdf",req.user);
-  console.log(req.user._id)
 
   try {
     const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories, date } = req.body;
@@ -14,7 +12,6 @@ const create_new_offer = async (req, res, next) => {
       title: title, description:description, quantity:quantity, address:address, image: req.file.location, price:price, timeSlot:timeSlot,
       specials: JSON.parse(specials), creatorId:req.user._id, categories:categories, date:date
     }
-    console.log(data);
     const newOffer = await Offer.create(data);
 
     res.status(201).send(newOffer);
@@ -79,7 +76,6 @@ const retrieve_offer_by_id = async (req, res, next) => {
 
 const retrieve_offer_by_category = async (req, res, next) => {
 
-  console.log("From params", req.query)
   try {
     const foundCategory = await Offer.find({ categories: req.query.category_name }); 
 

@@ -8,23 +8,39 @@ const create_new_ratings = async (req, res, next) => {
   try {
 
     const data = {
-        rating: req.body.rating,
-        creatorId: req.body.creatorId,
-        customerId: req.body.customerId,
-      }
-
-    //Getting array from Frontend needs to be parsed
+      rating: req.body.rating,
+      creatorId: req.body.creatorId,
+      customerId: req.body.customerId,
+    }
   
-    console.log(data);
-
     const newRating = await Rating.create(data);
 
-    await User.findByIdAndUpdate(req.body.creatorId, {
-        $push: {
-            ratings: newRating._id,
-          }, 
-    });
 
+    const [{avgRate}]= await Rating.aggregate([{
+      //filters the doccuments.
+      $match: { creatorId: newRating.creatorId }
+    }, {
+      $group: {
+        _id: null,
+        // rating: {$avg: '$rating'}
+        avgRate: {
+          $avg: "$rating"
+        }
+      }
+    }
+    ])
+
+    // console.log("Average Rating after creating", test);
+
+   const updatedUser= await User.findByIdAndUpdate(req.body.creatorId, {
+    averageRating:avgRate,
+      $push: {
+        ratings: newRating._id,
+      },
+    });
+    console.log(newRating._id)
+    console.log(updatedUser);
+    
     res.status(201).send(newRating);
   } catch (err) {
     console.log(err);
@@ -34,5 +50,5 @@ const create_new_ratings = async (req, res, next) => {
 
 
 module.exports = {
-    create_new_ratings,
+  create_new_ratings,
 };
