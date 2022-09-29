@@ -3,7 +3,6 @@ const Offer = require("../models/Offers");
 
 const create_new_offer = async (req, res, next) => {
 
-
   try {
     const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories, date } = req.body;
 
@@ -47,7 +46,7 @@ const get_all_offer = async (req, res, next) => {
       return res
         .status(400)
         .send(
-          "The collection you are trying to query does not contain any documents"
+          "There are no dishes on this category."
         );
     return res.status(200).send(allOffers);
 
@@ -79,8 +78,7 @@ const retrieve_offer_by_category = async (req, res, next) => {
   try {
     const foundCategory = await Offer.find({ categories: req.query.category_name }); 
 
-
-    if (!foundOffer)
+    if (!foundCategory)
       return res.status(404).send(`The Offer with foundCategory ${foundCategory} does not exist`);
 
     return res.status(200).send(foundCategory);

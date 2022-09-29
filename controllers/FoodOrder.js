@@ -86,10 +86,6 @@ const retrieve_order_by_id = async (req, res, next) => {
 
   try {
     const foundOrder = await Order.findById(id);
-    // .populate({ {
-    //   path: "creatorId",
-    //   select: ["userName", "email", "profilePic"],
-    // }})
 
     if (!foundOrder)
       return res.status(404).send(`The Order with _id ${id} does not exist`);
@@ -101,8 +97,28 @@ const retrieve_order_by_id = async (req, res, next) => {
   }
 };
 
+
+const update_all_quantity = async (req, res, next) => {
+
+  try {
+       const updateQuanity = await Offer.findByIdAndUpdate(
+      req.body.offerId,
+      {
+        quantity: quantity - req.body.order_quantity,
+      },
+      { new: true }
+    )
+
+    return res.status(200).send(updateQuanity);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports = {
   create_new_Order,
   get_all_order,
-  retrieve_order_by_id
+  retrieve_order_by_id,
+  update_all_quantity
 };

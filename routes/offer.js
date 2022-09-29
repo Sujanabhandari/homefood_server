@@ -9,7 +9,7 @@ const {
 
 
 const {
-  create_new_Order, get_all_order
+  create_new_Order, get_all_order, update_all_quantity
 } = require("../controllers/FoodOrder");
 
 // const upload = require("../middlewares/image_storage");
@@ -20,13 +20,13 @@ const {
 
 const upload = require("../middlewares/s3ImageUpload");
 
-offerRouter.route("/").get(get_all_offer);
+offerRouter.route("/").get(get_all_offer).put(update_all_quantity);
 
 offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_offer);
 
 offerRouter.route("/:id").get(retrieve_offer_by_id);
 
-offerRouter.route("/category_name").get(retrieve_offer_by_category);
+// offerRouter.route("/category_name").get(retrieve_offer_by_category);
 
 
 //for Reserve the Food Order
