@@ -84,27 +84,6 @@ const authenticate_self = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
 
-//   const creatorInfo = await User.findById(req.user._id);
-//   console.log("Creator Id", creatorInfo._id);
-
-//   const avgRating = await Rating.aggregate([{
-//     //filters the doccuments.
-//         $match : {creatorId: creatorInfo._id} 
-//     },{
-//         $group: {
-//             _id: null,
-//             // rating: {$avg: '$rating'}
-//             avgRate: {
-//                 $avg: "$rating"
-//             }
-//         }
-//     }
-// ])
-
-// console.log("Average Rating", avgRating);
-
-
-
   const user = await User.findById(req.user._id).
   populate(
     {

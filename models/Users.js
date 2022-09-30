@@ -13,7 +13,7 @@ const userSchema = new Schema({
   date: { type: Date, default: Date.now },
   ratings: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
   averageRating: {type:Number, default:0},
- 
+
   //One creator can create many offers
   offers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
   //One customer can order many food 

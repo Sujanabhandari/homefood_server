@@ -22,7 +22,6 @@ const create_new_ratings = async (req, res, next) => {
     }, {
       $group: {
         _id: null,
-        // rating: {$avg: '$rating'}
         avgRate: {
           $avg: "$rating"
         }
@@ -30,7 +29,6 @@ const create_new_ratings = async (req, res, next) => {
     }
     ])
 
-    // console.log("Average Rating after creating", test);
 
    const updatedUser= await User.findByIdAndUpdate(req.body.creatorId, {
     averageRating:avgRate,

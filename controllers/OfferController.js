@@ -39,7 +39,7 @@ const get_all_offer = async (req, res, next) => {
   try {
     const allOffers = await Offer.find(condition).populate({ 
       path: "creatorId",
-      select: ["userName", "email", "profilePic"],
+      select: ["userName", "email", "profilePic", "averageRating", "date"],
     })
 
     if (!allOffers.length)
@@ -88,11 +88,26 @@ const retrieve_offer_by_category = async (req, res, next) => {
   }
 };
 
+const remove_offer_by_id = async (req, res, next) => {
+  const { id } = req.params;
+  console.log("Remove id", id);
+  try {
+    const foundOffer = await Offer.findById(id); 
+    console.log("Offers Id", foundOffer._id);
+    const deleteOffer = await Offer.deleteOne(foundOffer._id); 
+    return res.status(200).send(deleteOffer);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 
 module.exports = {
   create_new_offer,
   retrieve_offer_by_id,
   get_all_offer,
   add_creator_to_offer,
-  retrieve_offer_by_category
+  retrieve_offer_by_category,
+  remove_offer_by_id
 };

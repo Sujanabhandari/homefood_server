@@ -59,7 +59,7 @@ const get_all_order = async (req, res, next) => {
     },)
     .populate({
       path: "creatorId",  
-      select: ["userName","profilePic"],
+      select: ["userName","profilePic","averageRating"],
     },)
 
     if (!allOrder.length)
@@ -108,7 +108,7 @@ const update_all_quantity = async (req, res, next) => {
       },
       { new: true }
     )
-
+    
     return res.status(200).send(updateQuanity);
   } catch (err) {
     console.log(err);
