@@ -55,11 +55,11 @@ const get_all_order = async (req, res, next) => {
       }, 
     ).populate({
       path: "customerId",  
-      select: ["userName", "profilePic"],
+      select: ["userName", "profilePic", "date"],
     },)
     .populate({
       path: "creatorId",  
-      select: ["userName","profilePic","averageRating"],
+      select: ["userName","profilePic","averageRating","date"],
     },)
 
     if (!allOrder.length)
