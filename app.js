@@ -7,15 +7,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
 var indexRouter = require('./routes/index');
-
 var usersRouter = require('./routes/users');
-// var authRouter = require('./routes/auth');
 var offerRouter = require('./routes/offer');
 var orderRouter = require('./routes/orderRoute.js')
 var ratingRouter = require('./routes/rating.js')
-
 var app = express();
-//exposed the header 
 app.use(cors({ origin: '*' , exposedHeaders:"token"}));
 
 app.use(logger('dev'));
@@ -30,18 +26,14 @@ app.use('/offers', offerRouter);
 app.use('/orders', orderRouter);
 app.use('/ratings', ratingRouter);
 
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   console.log(err);
-  // render the error page
   res.status(err.status || 500);
   res.send("Something is missing");
 });

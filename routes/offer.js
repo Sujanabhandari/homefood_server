@@ -7,12 +7,10 @@ const {
     create_new_offer, get_all_offer, retrieve_offer_by_id, retrieve_offer_by_category, remove_offer_by_id
 } = require("../controllers/OfferController");
 
-
 const {
   create_new_Order, get_all_order, update_all_quantity
 } = require("../controllers/FoodOrder");
 
-// const upload = require("../middlewares/image_storage");
 
 const {
     authorizeAdmin
@@ -26,10 +24,7 @@ offerRouter.post('/create', authorizeAdmin,upload.single('image'), create_new_of
 
 offerRouter.route("/:id").get(retrieve_offer_by_id);
 
-// offerRouter.route("/category_name").get(retrieve_offer_by_category);
-
 offerRouter.route("/delete/:id").delete(authorizeAdmin, remove_offer_by_id);
-//for Reserve the Food Order
 offerRouter.post('/:id/order', authorizeAdmin, create_new_Order);
 
 
