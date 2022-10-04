@@ -13,11 +13,12 @@ const authorizeAdmin = async(req, res, next)=>{
         //It gets the token and decodes the information
         const userContext = jwt.verify(authHeaders, process.env.SECRET_KEY);
         console.log(userContext)
+
         if(userContext) {
             req.user = userContext;
             next();
         };
-        return
+        return res.status(403).send("Not Authorized");
     }catch(err){
         console.log(err);
         next();
