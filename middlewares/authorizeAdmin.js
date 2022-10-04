@@ -21,11 +21,8 @@ const authorizeAdmin = async(req, res, next)=>{
         else return res.status(403).send("Not Authorized");
     }catch(err){
         console.log(err);
-        next();
+        return res.status(500).send("Something went wrong");
     }
-   
-
-    next();
 }
 
 module.exports = {authorizeAdmin};
