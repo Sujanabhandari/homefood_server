@@ -111,7 +111,6 @@ const getUser = async (req, res, next) => {
       select: ["rating"],
     },)
 
-
   if (!user) return res.status(404).send(`User doesn't exist`, 404);
   return res.status(200).json(user);
 };
