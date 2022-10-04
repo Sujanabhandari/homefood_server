@@ -35,10 +35,7 @@ const create_new_ratings = async (req, res, next) => {
       $push: {
         ratings: newRating._id,
       },
-    });
-    console.log(newRating._id)
-    console.log(updatedUser);
-    
+    });  
     res.status(201).send(newRating);
   } catch (err) {
     console.log(err);

@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-// var validator = require('validator');
-
 
 const userSchema = new Schema({
   userName: { type: String, unique: true, minLength: 2, maxLength: 255 },
@@ -13,12 +11,8 @@ const userSchema = new Schema({
   date: { type: Date, default: Date.now },
   ratings: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
   averageRating: {type:Number, default:0},
-
-  //One creator can create many offers
   offers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
-  //One customer can order many food 
   orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
-  // _customerOrderIds: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 });
 
 userSchema.methods.generateToken = function () {

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-// var validator = require('validator');
 
 const ratingSchema = new Schema({
   rating:{ type: Number, default:0},

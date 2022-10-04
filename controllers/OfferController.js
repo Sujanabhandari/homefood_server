@@ -90,10 +90,8 @@ const retrieve_offer_by_category = async (req, res, next) => {
 
 const remove_offer_by_id = async (req, res, next) => {
   const { id } = req.params;
-  console.log("Remove id", id);
   try {
     const foundOffer = await Offer.findById(id); 
-    console.log("Offers Id", foundOffer._id);
     const deleteOffer = await Offer.deleteOne(foundOffer._id); 
     return res.status(200).send(deleteOffer);
   } catch (err) {

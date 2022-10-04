@@ -11,7 +11,6 @@ const registerUser = async (req, res, next) => {
   } = req;
 
   const found = await User.findOne({ email });
-  console.log(found);
   if (found) return res.status(400).send("Error Occurs");
 
   const hash = await bcrypt.hash(password, 5);
