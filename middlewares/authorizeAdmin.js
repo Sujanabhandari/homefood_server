@@ -17,8 +17,8 @@ const authorizeAdmin = async(req, res, next)=>{
         if(userContext) {
             req.user = userContext;
             next();
-        };
-        return res.status(403).send("Not Authorized");
+        }
+        else return res.status(403).send("Not Authorized");
     }catch(err){
         console.log(err);
         next();
