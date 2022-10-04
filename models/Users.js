@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   userName: { type: String, unique: true, minLength: 2, maxLength: 255 },
   password: {  type: String, required: [true, 'Password is required']},
-  email: { type: String, required: true },
+  email: { type: String,unique: true, required: true },
   profilePic: { type: String},
   date: { type: Date, default: Date.now },
   ratings: [{ type: Schema.Types.ObjectId, ref: "Rating" }],

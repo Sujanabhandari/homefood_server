@@ -7,25 +7,24 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res, next) => {
 
   const {
-    body: { userName, email, profilePic, password, date},
+    body: { userName, email, profilePic, password, date },
   } = req;
 
   const found = await User.findOne({ email });
-  if (found) res.send("Erro Occurs");
+  console.log(found);
+  if (found) return res.status(400).send("Error Occurs");
 
   const hash = await bcrypt.hash(password, 5);
 
   const createdUser = new User({
     userName,
-    password: hash, 
+    password: hash,
     email,
-    date:date,
-    profilePic:req.file.location
+    date: date,
+    profilePic: req.file.location
   });
 
   await createdUser.save();
-
-
   const token = createdUser.generateToken();
 
   return res.set("token", token).status(201).json(
@@ -44,15 +43,32 @@ const loginUser = async (req, res, next) => {
     body: { email, password },
   } = req;
 
-  const found = await User.findOne({ email }).select("+password");
-  if (!found) res.status(404).send("User not exist");
+  try {
+    const found = await User.findOne({ email }).select("+password");
+    if (!found) res.status(404).send("User not exist");
 
-  const match = await bcrypt.compare(password, found.password);
-  if (!match) return res.status(400).send("Password is incorrect", 400);
+    const match = await bcrypt.compare(password, found.password);
+    if (!match) res.status(400).send("Password is incorrect");
 
-  const token = found.generateToken();
+    const token = found.generateToken();
 
-  return res.set("token", token).status(200).send("Login was successful");
+    return res.set("token", token).status(200).send("Login was successful");
+
+  }
+  catch(err) {
+    console.log("showing errors" , err);
+    return res.status(500).send("Login is failed");
+}
+
+  // const found = await User.findOne({ email }).select("+password");
+  // if (!found) res.status(404).send("User not exist");
+
+  // const match = await bcrypt.compare(password, found.password);
+  // if (!match) res.status(400).send("Password is incorrect");
+
+  // const token = found.generateToken();
+
+  // return res.set("token", token).status(200).send("Login was successful");
 };
 
 const authenticate_self = async (req, res, next) => {
@@ -85,16 +101,16 @@ const authenticate_self = async (req, res, next) => {
 const getUser = async (req, res, next) => {
 
   const user = await User.findById(req.user._id).
-  populate(
-    {
-      path: "offers",
-      select: ["title", "description", "specials", "quantity","image", "price","timeSlot", "reserved_quantity","categories"],
-    },
-  )
-  .populate({
-    path: "ratings",  
-    select: ["rating"],
-  },)
+    populate(
+      {
+        path: "offers",
+        select: ["title", "description", "specials", "quantity", "image", "price", "timeSlot", "reserved_quantity", "categories"],
+      },
+    )
+    .populate({
+      path: "ratings",
+      select: ["rating"],
+    },)
 
 
   if (!user) return res.status(404).send(`User doesn't exist`, 404);

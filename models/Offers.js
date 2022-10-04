@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-
 const offerSchema = new Schema({
   title: { type: String, minLength: 2, maxLength: 255 },
   description: { type: String},
@@ -15,10 +14,8 @@ const offerSchema = new Schema({
   timeSlot: { type: String},
   reserved_quantity: { type: Number, default: 0},
   date: { type: Date, default: Date.now },
-  //ID of logged in user.
   creatorId: { type: Schema.ObjectId, ref:"User" },
-  categories: { type: String},
-  // categoryId: { type: Schema.Types.ObjectId, ref: "Category" }
+  categories: { type: String}
 });
 
 const Offer = mongoose.model("Offer", offerSchema);
