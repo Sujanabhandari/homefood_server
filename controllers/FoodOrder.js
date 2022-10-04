@@ -44,23 +44,22 @@ const create_new_Order = async (req, res, next) => {
 
 
 const get_all_order = async (req, res, next) => {
-  console.log("Hello")
   const condition = req.query;
   try {
     const allOrder = await Order.find(condition).populate(
       {
         path: "offerId",
-        
-        select: ["quantity", "title", "price", "address","timeSlot","creatorId","date", "image"],
-      }, 
+
+        select: ["quantity", "title", "price", "address", "timeSlot", "creatorId", "date", "image"],
+      },
     ).populate({
-      path: "customerId",  
+      path: "customerId",
       select: ["userName", "profilePic", "date"],
     },)
-    .populate({
-      path: "creatorId",  
-      select: ["userName","profilePic","averageRating","date"],
-    },)
+      .populate({
+        path: "creatorId",
+        select: ["userName", "profilePic", "averageRating", "date"],
+      },)
 
     if (!allOrder.length)
       return res
@@ -68,8 +67,6 @@ const get_all_order = async (req, res, next) => {
         .send(
           "The collection you are trying to query does not contain any documents"
         );
-
-    console.log(allOrder);
     return res.status(200).send(allOrder);
 
   } catch (err) {
@@ -81,7 +78,6 @@ const get_all_order = async (req, res, next) => {
 
 
 const retrieve_order_by_id = async (req, res, next) => {
-  console.log("Retrieve Orders by Id")
   const { id } = req.params;
 
   try {
@@ -101,14 +97,14 @@ const retrieve_order_by_id = async (req, res, next) => {
 const update_all_quantity = async (req, res, next) => {
 
   try {
-       const updateQuanity = await Offer.findByIdAndUpdate(
+    const updateQuanity = await Offer.findByIdAndUpdate(
       req.body.offerId,
       {
         quantity: quantity - req.body.order_quantity,
       },
       { new: true }
     )
-    
+
     return res.status(200).send(updateQuanity);
   } catch (err) {
     console.log(err);
