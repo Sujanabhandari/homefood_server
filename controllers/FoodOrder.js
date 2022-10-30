@@ -35,6 +35,7 @@ const create_new_Order = async (req, res, next) => {
     )
 
     res.status(201).send(newOrder);
+    // res.status(201).json({newOrder, updateQuanity});
 
   } catch (err) {
     console.log(err);
