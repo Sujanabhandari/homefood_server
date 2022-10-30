@@ -1,5 +1,6 @@
 
 const Offer = require("../models/Offers");
+const getAmazonS3Url = require("./utils");
 
 const create_new_offer = async (req, res, next) => {
 
@@ -7,9 +8,8 @@ const create_new_offer = async (req, res, next) => {
     const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories, date } = req.body;
 
     //Getting array from Frontend needs to be parsed
-    console.log(req.file.location)
     const data = {
-      title: title, description:description, quantity:quantity, address:address, image: req.file.location, price:price, timeSlot:timeSlot,
+      title: title, description:description, quantity:quantity, address:address, image: getAmazonS3Url(req.file.location, req.file.key), price:price, timeSlot:timeSlot,
       specials: JSON.parse(specials), creatorId:req.user._id, categories:categories, date:date
     }
     const newOffer = await Offer.create(data);

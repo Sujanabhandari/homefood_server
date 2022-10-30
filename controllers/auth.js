@@ -2,6 +2,7 @@ const User = require("../models/Users");
 const Rating = require("../models/Ratings");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const getAmazonS3Url = require("./utils");
 
 
 const registerUser = async (req, res, next) => {
@@ -9,7 +10,6 @@ const registerUser = async (req, res, next) => {
   const {
     body: { userName, email, profilePic, password, date },
   } = req;
-  console.log(req.file);
 
   const found = await User.findOne({ email });
   if (found) return res.status(400).send("Error Occurs");
@@ -21,7 +21,7 @@ const registerUser = async (req, res, next) => {
     password: hash,
     email,
     date: date,
-    profilePic: req.file.location
+    profilePic: getAmazonS3Url(req.file.location, req.file.key)
   });
   
 
