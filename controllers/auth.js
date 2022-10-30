@@ -5,10 +5,11 @@ const jwt = require("jsonwebtoken");
 
 
 const registerUser = async (req, res, next) => {
-
+  console.log("Hello from sujana");
   const {
     body: { userName, email, profilePic, password, date },
   } = req;
+  console.log(req.file);
 
   const found = await User.findOne({ email });
   if (found) return res.status(400).send("Error Occurs");
@@ -22,6 +23,7 @@ const registerUser = async (req, res, next) => {
     date: date,
     profilePic: req.file.location
   });
+  
 
   await createdUser.save();
   const token = createdUser.generateToken();
