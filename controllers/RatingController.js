@@ -38,7 +38,7 @@ const create_new_ratings = async (req, res, next) => {
     });  
     res.status(201).send(newRating);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
