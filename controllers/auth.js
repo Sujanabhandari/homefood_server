@@ -15,7 +15,8 @@ const registerUser = async (req, res, next) => {
   if (found) return res.status(400).send("Error Occurs");
 
   const hash = await bcrypt.hash(password, 5);
-
+  console.log(req.file);
+  console.log(getAmazonS3Url(req.file.location, req.file.key));
   const createdUser = new User({
     userName,
     password: hash,
@@ -23,7 +24,6 @@ const registerUser = async (req, res, next) => {
     date: date,
     profilePic: getAmazonS3Url(req.file.location, req.file.key)
   });
-  
 
   await createdUser.save();
   const token = createdUser.generateToken();
@@ -56,10 +56,10 @@ const loginUser = async (req, res, next) => {
     return res.set("token", token).status(200).send("Login was successful");
 
   }
-  catch(err) {
-    console.log("showing errors" , err);
+  catch (err) {
+    console.log("showing errors", err);
     return res.status(500).send("Login is failed");
-}
+  }
 
   // const found = await User.findOne({ email }).select("+password");
   // if (!found) res.status(404).send("User not exist");
