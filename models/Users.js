@@ -23,7 +23,6 @@ userSchema.methods.generateToken = function () {
     profilePic: this.profilePic,
   };
   const token = jwt.sign(payload, process.env.SECRET_KEY);
-  console.log(token);
   return token;
 };
 

@@ -33,7 +33,7 @@ const create_new_Order = async (req, res, next) => {
     res.status(201).send(newOrder);
 
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
@@ -66,8 +66,7 @@ const get_all_order = async (req, res, next) => {
     return res.status(200).send(allOrder);
 
   } catch (err) {
-    console.log(err);
-
+    console.error(err);
     next(err);
   }
 };
@@ -84,7 +83,7 @@ const retrieve_order_by_id = async (req, res, next) => {
 
     return res.status(200).send(foundOrder);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
@@ -103,7 +102,7 @@ const update_all_quantity = async (req, res, next) => {
 
     return res.status(200).send(updateQuanity);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };

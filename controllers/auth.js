@@ -6,7 +6,6 @@ const getAmazonS3Url = require("./utils");
 
 
 const registerUser = async (req, res, next) => {
-  console.log("Hello from sujana");
   const {
     body: { userName, email, profilePic, password, date },
   } = req;
@@ -15,8 +14,6 @@ const registerUser = async (req, res, next) => {
   if (found) return res.status(400).send("Error Occurs");
 
   const hash = await bcrypt.hash(password, 5);
-  console.log(req.file);
-  console.log(getAmazonS3Url(req.file.location, req.file.key));
   const createdUser = new User({
     userName,
     password: hash,
@@ -57,7 +54,7 @@ const loginUser = async (req, res, next) => {
 
   }
   catch (err) {
-    console.log("showing errors", err);
+    console.error(err);
     return res.status(500).send("Login is failed");
   }
 
@@ -94,7 +91,7 @@ const authenticate_self = async (req, res, next) => {
     return res.set("token", token).status(200).send("Login was successfull");
 
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next();
   }
 };

@@ -16,7 +16,7 @@ const create_new_offer = async (req, res, next) => {
 
     res.status(201).send(newOffer);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
@@ -52,8 +52,7 @@ const get_all_offer = async (req, res, next) => {
     return res.status(200).send(allOffers);
 
   } catch (err) {
-    console.log(err);
-
+    console.error(err);
     next(err);
   }
 };
@@ -69,7 +68,7 @@ const retrieve_offer_by_id = async (req, res, next) => {
 
     return res.status(200).send(foundOffer);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
@@ -84,7 +83,7 @@ const retrieve_offer_by_category = async (req, res, next) => {
 
     return res.status(200).send(foundCategory);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
@@ -96,7 +95,7 @@ const remove_offer_by_id = async (req, res, next) => {
     const deleteOffer = await Offer.deleteOne(foundOffer._id);
     return res.status(200).send(deleteOffer);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 };
