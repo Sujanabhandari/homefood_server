@@ -9,8 +9,8 @@ const create_new_offer = async (req, res, next) => {
 
     //Getting array from Frontend needs to be parsed
     const data = {
-      title: title, description:description, quantity:quantity, address:address, image: getAmazonS3Url(req.file.location, req.file.key), price:price, timeSlot:timeSlot,
-      specials: JSON.parse(specials), creatorId:req.user._id, categories:categories, date:date
+      title: title, description: description, quantity: quantity, address: address, image: getAmazonS3Url(req.file.location, req.file.key), price: price, timeSlot: timeSlot,
+      specials: JSON.parse(specials), creatorId: req.user._id, categories: categories, date: date
     }
     const newOffer = await Offer.create(data);
 
@@ -38,7 +38,7 @@ const add_creator_to_offer = async (req, res, next) => {
 const get_all_offer = async (req, res, next) => {
   const condition = req.query;
   try {
-    const allOffers = await Offer.find(condition).populate({ 
+    const allOffers = await Offer.find(condition).populate({
       path: "creatorId",
       select: ["userName", "email", "profilePic", "averageRating", "date"],
     })
@@ -60,9 +60,9 @@ const get_all_offer = async (req, res, next) => {
 
 const retrieve_offer_by_id = async (req, res, next) => {
   const { id } = req.params;
- 
+
   try {
-    const foundOffer = await Offer.findById(id).populate('creatorId'); 
+    const foundOffer = await Offer.findById(id).populate('creatorId');
 
     if (!foundOffer)
       return res.status(404).send(`The Offer with _id ${id} does not exist`);
@@ -77,7 +77,7 @@ const retrieve_offer_by_id = async (req, res, next) => {
 const retrieve_offer_by_category = async (req, res, next) => {
 
   try {
-    const foundCategory = await Offer.find({ categories: req.query.category_name }); 
+    const foundCategory = await Offer.find({ categories: req.query.category_name });
 
     if (!foundCategory)
       return res.status(404).send(`The Offer with foundCategory ${foundCategory} does not exist`);
@@ -92,8 +92,8 @@ const retrieve_offer_by_category = async (req, res, next) => {
 const remove_offer_by_id = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const foundOffer = await Offer.findById(id); 
-    const deleteOffer = await Offer.deleteOne(foundOffer._id); 
+    const foundOffer = await Offer.findById(id);
+    const deleteOffer = await Offer.deleteOne(foundOffer._id);
     return res.status(200).send(deleteOffer);
   } catch (err) {
     console.log(err);

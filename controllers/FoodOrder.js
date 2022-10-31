@@ -7,14 +7,10 @@ const { update } = require("../models/Orders");
 
 const create_new_Order = async (req, res, next) => {
 
-  console.log("Offer Information", req.body)
-
   try {
     const { customerId, creatorId, offerId, order_quantity } = req.body;
 
     //Getting array from Frontend needs to be parsed
-    console.log(req.body);
-    console.log()
 
     const data = {
       offerId: req.body.offerId,
