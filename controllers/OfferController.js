@@ -6,8 +6,6 @@ const create_new_offer = async (req, res, next) => {
 
   try {
     const { title, description, quantity, image, address, price, timeSlot, specials, creatorId, categories, date } = req.body;
-
-    //Getting array from Frontend needs to be parsed
     const data = {
       title: title, description: description, quantity: quantity, address: address, image: getAmazonS3Url(req.file.location, req.file.key), price: price, timeSlot: timeSlot,
       specials: JSON.parse(specials), creatorId: req.user._id, categories: categories, date: date

@@ -1,9 +1,6 @@
 const User = require("../models/Users");
-const Rating = require("../models/Ratings");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const getAmazonS3Url = require("./utils");
-
 
 const registerUser = async (req, res, next) => {
   const {
@@ -11,7 +8,10 @@ const registerUser = async (req, res, next) => {
   } = req;
 
   const found = await User.findOne({ email });
-  if (found) return res.status(400).send("Error Occurs");
+  if (found) return res.status(400).json({
+    message:
+      'User Already exists',
+  });
 
   const hash = await bcrypt.hash(password, 5);
   const createdUser = new User({
@@ -36,37 +36,32 @@ const registerUser = async (req, res, next) => {
 };
 
 const loginUser = async (req, res, next) => {
-
   const {
     body: { email, password },
   } = req;
 
   try {
     const found = await User.findOne({ email }).select("+password");
-    if (!found) res.status(404).send("User not exist");
+    if (!found) return res.status(400).json({
+      message:
+        "User doesn't exist",
+    });
 
     const match = await bcrypt.compare(password, found.password);
-    if (!match) res.status(400).send("Password is incorrect");
+    if (!match) return res.status(400).json({
+      message:
+        "Password doesn't match",
+    });
 
     const token = found.generateToken();
 
-    return res.set("token", token).status(200).send("Login was successful");
+    return res.set("token", token).status(200).json("Login was successful");
 
   }
   catch (err) {
     console.error(err);
     return res.status(500).send("Login is failed");
   }
-
-  // const found = await User.findOne({ email }).select("+password");
-  // if (!found) res.status(404).send("User not exist");
-
-  // const match = await bcrypt.compare(password, found.password);
-  // if (!match) res.status(400).send("Password is incorrect");
-
-  // const token = found.generateToken();
-
-  // return res.set("token", token).status(200).send("Login was successful");
 };
 
 const authenticate_self = async (req, res, next) => {
